@@ -35,13 +35,28 @@
             </header>
 
             <section class="section">
-                <div class="section-header">
-                    <h2>Popular Spots</h2>
-                    <div class="filters">
-                        <button class="filter-chip active">All</button>
-                        <button class="filter-chip">Japanese</button>
-                        <button class="filter-chip">Mexican</button>
-                        <button class="filter-chip">Italian</button>
+                <div class="section-header" style="flex-direction: column; align-items: stretch; gap: 16px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <h2>Popular Spots</h2>
+                        <div class="search-bar" style="display: flex; gap: 8px;">
+                            <input type="text" id="searchInput" placeholder="Search by name..." style="min-width: 250px;">
+                        </div>
+                    </div>
+                    <div class="filters-container" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 16px;">
+                        <div class="filters cuisine-filters" id="cuisineFilters">
+                            <button class="filter-chip active" data-cuisine="all">All</button>
+                            <button class="filter-chip" data-cuisine="Japanese">Japanese</button>
+                            <button class="filter-chip" data-cuisine="American">American</button>
+                            <button class="filter-chip" data-cuisine="Italian">Italian</button>
+                            <button class="filter-chip" data-cuisine="Mexican">Mexican</button>
+                        </div>
+                        <div class="filters price-filters" id="priceFilters">
+                            <span style="font-size: 14px; color: var(--text-muted);">Price:</span>
+                            <button class="filter-chip" data-price="$">$</button>
+                            <button class="filter-chip active" data-price="any">Any</button>
+                            <button class="filter-chip" data-price="$$">$$</button>
+                            <button class="filter-chip" data-price="$$$">$$$</button>
+                        </div>
                     </div>
                 </div>
 

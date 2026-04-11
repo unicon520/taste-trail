@@ -15,11 +15,62 @@ document.addEventListener('DOMContentLoaded', () => {
     const formRest = document.getElementById('addRestaurantForm');
     const formReview = document.getElementById('addReviewForm');
 
+    // Filters
+    const searchInput = document.getElementById('searchInput');
+    const cuisineFilters = document.querySelectorAll('.cuisine-filters .filter-chip');
+    const priceFilters = document.querySelectorAll('.price-filters .filter-chip');
+
     // State
     let currentRestaurants = [];
+    let currentCuisineFilter = 'all';
+    let currentPriceFilter = 'any';
 
     // Initialize
     fetchRestaurants();
+
+    // Setup Filters
+    if(searchInput) {
+        searchInput.addEventListener('input', applyFilters);
+    }
+    
+    if(cuisineFilters.length > 0) {
+        cuisineFilters.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                cuisineFilters.forEach(b => b.classList.remove('active'));
+                e.target.classList.add('active');
+                currentCuisineFilter = e.target.dataset.cuisine;
+                applyFilters();
+            });
+        });
+    }
+
+    if(priceFilters.length > 0) {
+        priceFilters.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                priceFilters.forEach(b => b.classList.remove('active'));
+                e.target.classList.add('active');
+                currentPriceFilter = e.target.dataset.price;
+                applyFilters();
+            });
+        });
+    }
+
+    function applyFilters() {
+        const query = searchInput.value.toLowerCase();
+        
+        const filtered = currentRestaurants.filter(rest => {
+            const matchesSearch = rest.name.toLowerCase().includes(query) || rest.location.toLowerCase().includes(query);
+            const matchesCuisine = currentCuisineFilter === 'all' || rest.cuisine.toLowerCase() === currentCuisineFilter.toLowerCase();
+            
+            // Mock price range if it doesn't exist for filtering purposes
+            const price = rest.priceRange || '$$'; 
+            const matchesPrice = currentPriceFilter === 'any' || price === currentPriceFilter;
+
+            return matchesSearch && matchesCuisine && matchesPrice;
+        });
+
+        renderGrid(filtered);
+    }
 
     // --- Actions ---
 

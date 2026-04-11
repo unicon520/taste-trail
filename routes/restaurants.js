@@ -36,7 +36,7 @@ router.get('/:id', async (req, res) => {
 
 // POST a new restaurant
 router.post('/', async (req, res) => {
-  const { name, location, cuisine, imageUrl } = req.body;
+  const { name, location, cuisine, imageUrl, ...otherFields } = req.body;
   if (!name || !location || !cuisine) {
     return res.status(400).json({ error: 'Name, location, and cuisine are required.' });
   }
@@ -46,7 +46,8 @@ router.post('/', async (req, res) => {
       name, 
       location, 
       cuisine, 
-      imageUrl: imageUrl || 'https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&q=80&w=800' 
+      imageUrl: imageUrl || 'https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&q=80&w=800',
+      ...otherFields
     });
     const saved = await newRestaurant.save();
     
@@ -61,7 +62,7 @@ router.post('/', async (req, res) => {
 
 // POST a review to a restaurant
 router.post('/:id/reviews', async (req, res) => {
-  const { user, rating, comment } = req.body;
+  const { user, rating, comment, tags } = req.body;
   if (!user || !rating) {
     return res.status(400).json({ error: 'User and rating are required.' });
   }
@@ -72,7 +73,7 @@ router.post('/:id/reviews', async (req, res) => {
       return res.status(404).json({ error: 'Restaurant not found.' });
     }
     
-    restaurant.reviews.push({ user, rating: Number(rating), comment });
+    restaurant.reviews.push({ user, rating: Number(rating), comment, tags: tags || [] });
     const updated = await restaurant.save(); // pre-save hook calculates rating
 
     const obj = updated.toObject();
