@@ -36,14 +36,14 @@
             </header>
 
             <section class="section">
-                <div class="section-header" style="flex-direction: column; align-items: stretch; gap: 16px;">
-                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div class="section-header" style="display:flex; flex-direction: column; align-items: stretch; gap: 16px;">
+                    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap:12px;">
                         <h2>Popular Spots</h2>
-                        <div class="search-bar" style="display: flex; gap: 8px;">
-                            <input type="text" id="searchInput" placeholder="Search by name..." style="min-width: 250px;">
+                        <div class="search-bar" style="display: flex; flex:1; min-width: 200px;">
+                            <input type="text" id="searchInput" placeholder="Search by name..." style="width: 100%;">
                         </div>
                     </div>
-                    <div class="filters-container" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 16px;">
+                    <div class="filters-container" style="display: flex; flex-wrap: wrap; gap: 16px; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 16px;">
                         <div class="filters cuisine-filters" id="cuisineFilters">
                             <button class="filter-chip active" data-cuisine="all">All</button>
                             <button class="filter-chip" data-cuisine="Japanese">Japanese</button>
@@ -52,7 +52,7 @@
                             <button class="filter-chip" data-cuisine="Mexican">Mexican</button>
                         </div>
                         <div class="filters price-filters" id="priceFilters">
-                            <span style="font-size: 14px; color: var(--text-muted);">Price:</span>
+                            <span style="font-size: 14px; color: var(--text-muted); margin-right:4px;">Price:</span>
                             <button class="filter-chip" data-price="$">$</button>
                             <button class="filter-chip active" data-price="any">Any</button>
                             <button class="filter-chip" data-price="$$">$$</button>
