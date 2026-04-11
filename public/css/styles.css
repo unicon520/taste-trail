@@ -717,3 +717,18 @@ body.layout-laptop .decision-summary {
     flex-direction: row;
     text-align: left;
 }
+
+body.layout-mobile .filters {
+    flex-wrap: nowrap !important;
+    overflow-x: auto;
+    padding-bottom: 4px;
+    -webkit-overflow-scrolling: touch;
+    justify-content: flex-start;
+    width: 100%;
+}
+body.layout-mobile .filters::-webkit-scrollbar {
+    display: none;
+}
+body.layout-mobile .filter-chip {
+    flex-shrink: 0;
+}
