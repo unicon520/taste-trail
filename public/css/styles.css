@@ -652,3 +652,67 @@ input:focus, textarea:focus {
     min-height: 10%;
     transition: height 0.5s ease;
 }
+
+/* ===============================
+   DEVICE DETECTION LAYOUT OVERRIDES 
+   =============================== */
+
+/* --- MOBILE LAYOUT (.layout-mobile) --- */
+body.layout-mobile .app-container {
+    padding: 0 12px;
+}
+body.layout-mobile .navbar {
+    flex-direction: column;
+    gap: 16px;
+    padding: 16px 0;
+}
+body.layout-mobile .detail-content,
+body.layout-mobile .gallery-grid {
+    grid-template-columns: 1fr; /* Force 1 column everywhere */
+}
+body.layout-mobile .gallery-main {
+    grid-row: span 1;
+}
+body.layout-mobile .decision-summary {
+    flex-direction: column;
+    text-align: center;
+}
+body.layout-mobile .pros-cons {
+    grid-template-columns: 1fr;
+}
+body.layout-mobile .info-sidebar {
+    position: static; /* Remove sticky */
+    margin-top: 32px;
+}
+body.layout-mobile .hero h1 {
+    font-size: 36px;
+}
+body.layout-mobile .filters-container {
+    flex-direction: column;
+    gap: 16px;
+    align-items: flex-start;
+}
+body.layout-mobile .review-actions {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+/* --- LAPTOP/DESKTOP LAYOUT (.layout-laptop) --- */
+body.layout-laptop .app-container {
+    padding: 0 40px;
+}
+body.layout-laptop .detail-content {
+    grid-template-columns: 2fr 1fr; /* Force sidebar ratio */
+}
+body.layout-laptop .gallery-grid {
+    grid-template-columns: 2fr 1fr;
+}
+body.layout-laptop .info-sidebar {
+    position: sticky;
+    top: 24px;
+}
+body.layout-laptop .decision-summary {
+    flex-direction: row;
+    text-align: left;
+}
