@@ -18,14 +18,13 @@ const restaurantSchema = new mongoose.Schema({
 });
 
 // Calculate average rating before saving if reviews exist
-restaurantSchema.pre('save', function(next) {
+restaurantSchema.pre('save', function() {
   if (this.reviews && this.reviews.length > 0) {
     const totalRating = this.reviews.reduce((sum, r) => sum + r.rating, 0);
     this.rating = (totalRating / this.reviews.length).toFixed(1);
   } else {
     this.rating = 0;
   }
-  next();
 });
 
 module.exports = mongoose.model('Restaurant', restaurantSchema);
