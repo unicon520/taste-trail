@@ -20,6 +20,7 @@
                 Taste<span>Trail</span>
             </a>
             <div class="nav-actions">
+                <button class="btn btn-outline" id="editRestaurantBtn"><i class="ph ph-pencil"></i> Edit Details</button>
                 <a href="/" class="btn btn-outline"><i class="ph ph-arrow-left"></i> Home</a>
             </div>
         </nav>
@@ -31,6 +32,41 @@
 
     <!-- Modals Overlay -->
     <div class="modal-overlay" id="modalOverlay">
+        
+        <!-- Edit Restaurant Modal -->
+        <div class="modal" id="editRestaurantModal">
+            <div class="modal-header">
+                <h3>Edit Restaurant Details</h3>
+                <button class="close-modal"><i class="ph ph-x"></i></button>
+            </div>
+            <form id="editRestaurantForm" class="form">
+                <div class="form-group">
+                    <label>Restaurant Name</label>
+                    <input type="text" id="editRestName" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Location</label>
+                        <input type="text" id="editRestLocation" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Cuisine</label>
+                        <input type="text" id="editRestCuisine" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Image URL</label>
+                    <input type="url" id="editRestImageUrl">
+                </div>
+                <div class="form-group">
+                    <label>Verdict</label>
+                    <input type="text" id="editRestVerdict">
+                </div>
+                <!-- Additional fields can be added here -->
+                <button type="submit" class="btn btn-primary btn-block">Save Changes</button>
+            </form>
+        </div>
+
         <!-- Add Review Modal -->
         <div class="modal" id="addReviewModal">
             <div class="modal-header">

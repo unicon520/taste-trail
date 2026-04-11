@@ -2,7 +2,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const container = document.getElementById('detailContainer');
     const overlay = document.getElementById('modalOverlay');
     const addReviewModal = document.getElementById('addReviewModal');
+    const editRestModal = document.getElementById('editRestaurantModal');
     const formReview = document.getElementById('addReviewForm');
+    const formEdit = document.getElementById('editRestaurantForm');
+    const editBtn = document.getElementById('editRestaurantBtn');
     
     // Get ID from URL
     const params = new URLSearchParams(window.location.search);
@@ -244,7 +247,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         document.getElementById('openReviewBtn').addEventListener('click', () => {
             formReview.reset();
-            document.getElementById('ratingDisplay').innerText = '5 ?';
+            document.getElementById('ratingDisplay').innerText = '5 ⭐';
             document.getElementById('reviewRestId').value = restId;
             openModal(addReviewModal);
         });
@@ -267,7 +270,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Modal Logic
-    document.querySelector('.close-modal').addEventListener('click', closeModal);
+    document.querySelectorAll('.close-modal').forEach(btn => {
+        btn.addEventListener('click', closeModal);
+    });
     overlay.addEventListener('click', (e) => {
         if(e.target === overlay) closeModal();
     });
@@ -279,12 +284,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function closeModal() {
         overlay.classList.remove('active');
-        addReviewModal.classList.remove('active');
+        document.querySelectorAll('.modal').forEach(m => m.classList.remove('active'));
     }
 
     // Rating Slider
     document.getElementById('reviewRating').addEventListener('input', (e) => {
-        document.getElementById('ratingDisplay').innerText = `${e.target.value} ?`;
+        document.getElementById('ratingDisplay').innerText = `${e.target.value} ⭐`;
     });
 
     // Submit Review
@@ -311,9 +316,61 @@ document.addEventListener('DOMContentLoaded', () => {
             if (res.ok) {
                 closeModal();
                 fetchRestaurant(); // Refresh details
+            } else {
+                const data = await res.json();
+                alert(data.error || 'Failed to add review.');
             }
         } catch (error) {
             console.error('Error adding review', error);
         }
     });
+
+    // Handle Edit Button Click
+    if (editBtn) {
+        editBtn.addEventListener('click', () => {
+            if (!currentRest) return;
+            // Populate form
+            document.getElementById('editRestName').value = currentRest.name;
+            document.getElementById('editRestLocation').value = currentRest.location;
+            document.getElementById('editRestCuisine').value = currentRest.cuisine;
+            document.getElementById('editRestImageUrl').value = currentRest.imageUrl || '';
+            document.getElementById('editRestVerdict').value = currentRest.verdict || '';
+            
+            openModal(editRestModal);
+        });
+    }
+
+    // Handle Edit Form Submission
+    if (formEdit) {
+        formEdit.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const payload = {
+                name: document.getElementById('editRestName').value,
+                location: document.getElementById('editRestLocation').value,
+                cuisine: document.getElementById('editRestCuisine').value,
+                imageUrl: document.getElementById('editRestImageUrl').value,
+                verdict: document.getElementById('editRestVerdict').value
+            };
+
+            try {
+                const res = await fetch(`/api/restaurants/${restId}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (res.ok) {
+                    closeModal();
+                    fetchRestaurant(); // Refresh view
+                } else {
+                    const data = await res.json();
+                    alert(data.error || 'Failed to update restaurant.');
+                }
+            } catch (err) {
+                console.error('Error updating restaurant:', err);
+                alert('A network error occurred.');
+            }
+        });
+    }
 });

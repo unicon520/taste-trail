@@ -1,6 +1,13 @@
 const express = require('express');
 const router = express.Router();
 const Restaurant = require('../data/models/Restaurant');
+const Blacklist = require('../data/models/Blacklist');
+
+// Helper to check name blacklist
+async function isNameBlocked(name) {
+  const isBlocked = await Blacklist.findOne({ identifier: name });
+  return !!isBlocked;
+}
 
 // GET all restaurants
 router.get('/', async (req, res) => {
@@ -40,8 +47,11 @@ router.post('/', async (req, res) => {
   if (!name || !location || !cuisine) {
     return res.status(400).json({ error: 'Name, location, and cuisine are required.' });
   }
-  
+
   try {
+    if (await isNameBlocked(name)) {
+      return res.status(403).json({ error: 'This name has been blacklisted.' });
+    }
     const newRestaurant = new Restaurant({ 
       name, 
       location, 
@@ -55,8 +65,37 @@ router.post('/', async (req, res) => {
     obj.id = obj._id;
     res.status(201).json(obj);
   } catch (err) {
-    console.error('POST / error saving restaurant:', err);
     res.status(500).json({ error: err.message || 'Failed to save restaurant.' });
+  }
+});
+
+// PUT (Edit) a restaurant
+router.put('/:id', async (req, res) => {
+  const { name, location, cuisine, imageUrl, ...otherFields } = req.body;
+  try {
+    if (name && await isNameBlocked(name)) {
+      return res.status(403).json({ error: 'This name has been blacklisted.' });
+    }
+
+    const restaurant = await Restaurant.findById(req.params.id);
+    if (!restaurant) return res.status(404).json({ error: 'Restaurant not found.' });
+
+    // Update fields
+    if (name) restaurant.name = name;
+    if (location) restaurant.location = location;
+    if (cuisine) restaurant.cuisine = cuisine;
+    if (imageUrl) restaurant.imageUrl = imageUrl;
+
+    // Direct assignment for other fields (handle carefully in production)
+    Object.assign(restaurant, otherFields);
+
+    const saved = await restaurant.save();
+    const obj = saved.toObject();
+    obj.id = obj._id;
+    res.json(obj);
+  } catch (err) {
+    console.error('PUT /:id error:', err);
+    res.status(500).json({ error: err.message || 'Failed to update restaurant.' });
   }
 });
 

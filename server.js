@@ -6,6 +6,7 @@ const path = require('path');
 const mongoose = require('mongoose');
 
 const restaurantRoutes = require('./routes/restaurants');
+const adminRoutes = require('./routes/admin');
 
 const app = express();
 
@@ -13,6 +14,25 @@ const app = express();
 app.use(cors());
 app.use(morgan('dev'));
 app.use(express.json());
+
+// Import Blacklist model
+const Blacklist = require('./data/models/Blacklist');
+
+// Blacklisting Middleware
+app.use(async (req, res, next) => {
+  if (['POST', 'PUT', 'DELETE'].includes(req.method)) {
+    const clientIP = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+    try {
+      const isBlocked = await Blacklist.findOne({ identifier: clientIP });
+      if (isBlocked) {
+        return res.status(403).json({ error: 'Your IP address has been blacklisted from making changes.' });
+      }
+    } catch (err) {
+      console.error('Blacklist check error:', err);
+    }
+  }
+  next();
+});
 
 // Serve static frontend files
 app.use(express.static(path.join(__dirname, 'public')));
@@ -29,6 +49,7 @@ if (mongoURI) {
 
 // API Routes
 app.use('/api/restaurants', restaurantRoutes);
+app.use('/api/admin', adminRoutes);
 
 // Fallback to index.html for any unknown routes (SPA like behavior)
 app.get(/.*$/, (req, res) => {

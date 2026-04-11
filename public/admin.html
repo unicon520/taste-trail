@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TasteTrail | Admin Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/styles.css">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>
+        .admin-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            margin-bottom: 32px;
+        }
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 16px;
+        }
+        .admin-table th, .admin-table td {
+            text-align: left;
+            padding: 12px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .admin-table th {
+            color: var(--text-muted);
+            font-size: 14px;
+            text-transform: uppercase;
+        }
+        .btn-danger {
+            background: #f87171;
+            color: white;
+        }
+        .btn-danger:hover {
+            background: #ef4444;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <nav class="navbar">
+            <a href="/" class="logo" style="text-decoration:none;">
+                <i class="ph-fill ph-map-pin"></i>
+                Taste<span>Trail</span> Admin
+            </a>
+            <div class="nav-actions">
+                <a href="/" class="btn btn-outline"><i class="ph ph-arrow-left"></i> Back to Site</a>
+            </div>
+        </nav>
+
+        <main class="main-content">
+            <div class="admin-section">
+                <h2>Manage Restaurants</h2>
+                <div id="restaurantsList">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Location</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="restaurantsTableBody">
+                            <!-- Rows populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="admin-section">
+                <h2>Blacklist & Moderation</h2>
+                <form id="blacklistForm" class="form" style="display: flex; gap: 12px; align-items: flex-end; margin-bottom: 24px;">
+                    <div class="form-group" style="flex: 2; margin-bottom:0;">
+                        <label>IP or Username to Blacklist</label>
+                        <input type="text" id="blacklistIdentifier" required placeholder="e.g. 192.168.1.1 or JohnDoe">
+                    </div>
+                    <div class="form-group" style="flex: 3; margin-bottom:0;">
+                        <label>Reason</label>
+                        <input type="text" id="blacklistReason" placeholder="Spamming reviews">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Blacklist</button>
+                </form>
+
+                <h3>Currently Blacklisted</h3>
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Identifier</th>
+                            <th>Reason</th>
+                            <th>Blocked On</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="blacklistTableBody">
+                        <!-- Rows populated by JS -->
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <script src="/js/admin.js"></script>
+</body>
+</html>
