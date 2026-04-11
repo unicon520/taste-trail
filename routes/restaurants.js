@@ -14,6 +14,7 @@ router.get('/', async (req, res) => {
     });
     res.json(mapped);
   } catch (err) {
+    console.error('GET / error:', err);
     res.status(500).json({ error: 'Server error fetching restaurants.' });
   }
 });
@@ -28,6 +29,7 @@ router.get('/:id', async (req, res) => {
     obj.id = obj._id;
     res.json(obj);
   } catch (err) {
+    console.error('GET /:id error:', err);
     res.status(500).json({ error: 'Server error or invalid ID.' });
   }
 });
@@ -52,7 +54,8 @@ router.post('/', async (req, res) => {
     obj.id = obj._id;
     res.status(201).json(obj);
   } catch (err) {
-    res.status(500).json({ error: 'Failed to save restaurant.' });
+    console.error('POST / error saving restaurant:', err);
+    res.status(500).json({ error: err.message || 'Failed to save restaurant.' });
   }
 });
 
@@ -76,7 +79,8 @@ router.post('/:id/reviews', async (req, res) => {
     obj.id = obj._id;
     res.status(201).json(obj);
   } catch (err) {
-    res.status(500).json({ error: 'Failed to add review.' });
+    console.error('POST /:id/reviews error:', err);
+    res.status(500).json({ error: err.message || 'Failed to add review.' });
   }
 });
 

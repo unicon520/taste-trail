@@ -95,9 +95,13 @@ document.addEventListener('DOMContentLoaded', () => {
             if (res.ok) {
                 closeModal();
                 fetchRestaurants(); // Refresh
+            } else {
+                const errorData = await res.json();
+                alert('Action failed: ' + (errorData.error || 'Unknown error'));
             }
         } catch (error) {
             console.error('Error adding restaurant', error);
+            alert('A network error occurred. See console.');
         }
     });
 
