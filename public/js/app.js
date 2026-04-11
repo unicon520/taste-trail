@@ -67,21 +67,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Delegate clicks on dynamically created grid
     grid.addEventListener('click', (e) => {
-        const btn = e.target.closest('.add-review-btn');
+        const btn = e.target.closest('.view-details-btn');
         if (btn) {
-            const id = btn.dataset.id;
-            const name = btn.dataset.name;
-            openReviewModal(id, name);
+            window.location.href = `/restaurant.html?id=${btn.dataset.id}`;
         }
     });
-
-    function openReviewModal(id, name) {
-        formReview.reset();
-        ratingDisplay.innerText = '5 ⭐';
-        document.getElementById('reviewRestId').value = id;
-        document.getElementById('reviewTargetName').innerText = `Reviewing: ${name}`;
-        openModal(addReviewModal);
-    }
 
     // --- Form Submissions ---
 
@@ -173,8 +163,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         `).join('')}
                         ${rest.reviews.length > 2 ? `<div class="review-item" style="text-align: center; background: none; color: #a1a1aa;">+ ${rest.reviews.length - 2} more reviews</div>` : ''}
                         
-                        <button class="add-review-btn" data-id="${rest.id}" data-name="${rest.name}">
-                            <i class="ph ph-pencil-simple"></i> Write a review
+                        <button class="add-review-btn view-details-btn" data-id="${rest.id}">
+                            View Details
                         </button>
                     </div>
                 </div>

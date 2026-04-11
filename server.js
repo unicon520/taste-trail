@@ -1,7 +1,10 @@
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
 const path = require('path');
+const mongoose = require('mongoose');
+
 const restaurantRoutes = require('./routes/restaurants');
 
 const app = express();
@@ -13,6 +16,16 @@ app.use(express.json());
 
 // Serve static frontend files
 app.use(express.static(path.join(__dirname, 'public')));
+
+// Connect to MongoDB
+const mongoURI = process.env.MONGODB_URI;
+if (mongoURI) {
+  mongoose.connect(mongoURI)
+    .then(() => console.log('✅ Connected to MongoDB Atlas'))
+    .catch(err => console.error('❌ MongoDB Connection Error:', err));
+} else {
+  console.log('⚠️ No MONGODB_URI found in .env file!');
+}
 
 // API Routes
 app.use('/api/restaurants', restaurantRoutes);
