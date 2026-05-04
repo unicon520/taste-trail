@@ -1,0 +1,25 @@
+name: Wake Up Render Site
+
+on:
+  schedule:
+    # This runs every 50 minutes (Render free tier sleeps after 15-30 mins)
+    - cron: '*/50 * * * *'
+  workflow_dispatch: # Allows you to run it manually for testing
+
+jobs:
+  ping-job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Run ping script
+        run: python ping_script.py
