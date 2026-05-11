@@ -2,8 +2,8 @@ name: Wake Up Render Site
 
 on:
   schedule:
-    # This runs every 50 minutes (Render free tier sleeps after 15-30 mins)
-    - cron: '*/50 * * * *'
+    # This runs every 14 minutes (Render free tier sleeps after 15-30 mins)
+    - cron: '*/14 * * * *'
   workflow_dispatch: # Allows you to run it manually for testing
 
 jobs:
